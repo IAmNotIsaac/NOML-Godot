@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733332"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="noml_logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     width="64mm"
+     units="px"
+     inkscape:zoom="2.096401"
+     inkscape:cx="144.77192"
+     inkscape:cy="141.90987"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient29589">
+      <stop
+         style="stop-color:#ff7f2a;stop-opacity:1"
+         offset="0"
+         id="stop29585" />
+      <stop
+         style="stop-color:#ff2687;stop-opacity:1"
+         offset="1"
+         id="stop29587" />
+    </linearGradient>
+    <rect
+       x="44.83875"
+       y="56.286942"
+       width="156.93563"
+       height="113.5279"
+       id="rect9543" />
+    <rect
+       x="22.896383"
+       y="31.482527"
+       width="201.29737"
+       height="187.94114"
+       id="rect4357" />
+    <rect
+       x="44.83875"
+       y="56.286942"
+       width="156.93563"
+       height="113.5279"
+       id="rect28875" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient29589"
+       id="linearGradient29591"
+       x1="10.475294"
+       y1="49.264084"
+       x2="52.714535"
+       y2="11.780202"
+       gradientUnits="userSpaceOnUse" />
+    <rect
+       x="44.83875"
+       y="56.286942"
+       width="156.93563"
+       height="113.5279"
+       id="rect37253" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:url(#linearGradient29591);fill-opacity:1;stroke:none;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect846"
+       width="67.73333"
+       height="67.73333"
+       x="0"
+       y="0"
+       ry="11.08405" />
+    <text
+       xml:space="preserve"
+       transform="scale(0.26458333)"
+       id="text4355"
+       style="fill:black;fill-opacity:1;line-height:1.25;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;white-space:pre;shape-inside:url(#rect4357)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:54.9701px;line-height:1.25;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#803300;fill-opacity:0.40326339;stroke:none;stroke-width:1.37426"
+       x="1.6710447"
+       y="52.923683"
+       id="text27829"><tspan
+         sodipodi:role="line"
+         id="tspan27827"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:54.9701px;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;fill:#803300;stroke-width:1.37426;fill-opacity:0.40326339"
+         x="1.6710447"
+         y="52.923683">()</tspan></text>
+    <text
+       xml:space="preserve"
+       transform="matrix(0.40929022,0,0,0.40929022,-14.548346,-3.8177546)"
+       id="text37251"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:62.0587px;line-height:1.25;font-family:'Cascadia Code';-inkscape-font-specification:'Cascadia Code, @wght=700';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 700;white-space:pre;shape-inside:url(#rect37253);fill:#ffffff;fill-opacity:1;stroke:none"><tspan
+         x="44.837891"
+         y="113.58711"
+         id="tspan45333">NOML</tspan></text>
+  </g>
+</svg>
