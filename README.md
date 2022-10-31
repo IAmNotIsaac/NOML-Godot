@@ -46,8 +46,10 @@ func read_noml():
 
 	var noml_builder = NOML.parse(file)		# Returns a NOMLBuilder, allowing us to create mappings
 	noml_builder \
-		.map_native("Node2D", Node2D) \		# First we define what we want to call our type in the NOML file, then we pass in our type.
-		.map_native("Body", KinematicBody2D) \	# Although the name and type name don't have to match, it's usually recommended they do.
+		# First we define what we want to call our type in the NOML file, then we pass in our type.
+		.map_native("Node2D", Node2D) \
+		# Although the name and type name don't have to match, it's usually recommended they do.
+		.map_native("Body", KinematicBody2D) \	
 		.build()				# When we're ready, we want to build our data.
 ```
 Great, we've got our code. But what does our NOML file look like?
