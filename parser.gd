@@ -306,5 +306,5 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				return obj
 	
-	printerr("Expected integer, float, string, array, dictionary, or mapping, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+	printerr("Expected boolean, integer, float, string, array, dictionary, or mapping, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
 	return null

@@ -6,6 +6,7 @@ Godot implementation for Named Object Markup Language (NOML).
 Not much.
 It's a markup language I've made just because JSON is nice and easy, but there's one or two things which I don't particularly like about it. One of these, of course, being the way objects are handled, so I create a somewhat friendlier way of handling it.
 NOML itself is just a standard of sorts. Any NOML implementation should include the following:
+- Boolean
 - Integers
 - Floats
 - Strings
@@ -123,6 +124,7 @@ Additionally, it should be mentioned that NOML also has support for comments. Th
 
 ##### An in-depth guide
 NOML is a language with only types. The types, as previously stated, are:
+- Boolean
 - Integers
 - Floats
 - Strings
@@ -143,6 +145,16 @@ Okay, now you probably don't want to just store a 1 or something like that in a 
 One bothersome thing about JSON is that due to the lack of mappings, you actually have to interpret your own objects. Of course, not impossible, or very hard even, but certainly a time waster. The purpose of NOML is namely just to make that one thing easier, so you'll find that in all other aspects, NOML is pretty much JSON. This is because JSON isn't really that bad, just a couple short-comings.
 
 ### Types
+###### Boolean
+A simple true or false! It can only contain be in two possible states. A true or false. A 1 or a 0.
+```
+# Example.noml
+[
+	true,
+	false
+]
+```
+
 ###### Integers
 Integers in NOML are just regular ol' whole numbers. Stuff like 1. And 2. 3, 4, 5, 6, 100, 200, 6'000'000, you get the gist. They're pretty fundamental, not much to it. They get converted into Godot integers on parse.
 ```

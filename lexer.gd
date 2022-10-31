@@ -16,11 +16,15 @@ class Token:
 	
 	
 	func _to_string() -> String:
-		return "%s(%s)" % [["INT", "FLT", "STR", "IDN", "OPR"][type], value]
+		return "%s(%s)" % [["INT", "FLT", "STR", "IDN", "OPR", "BLN"][type], value]
 	
 	
 	func is_literal() -> bool:
-		return is_int() or is_float() or is_string()
+		return is_int() or is_float() or is_string() or is_boolean()
+	
+	
+	func is_boolean() -> bool:
+		return type == 5
 	
 	
 	func is_int() -> bool:
@@ -114,7 +118,8 @@ enum TokenType {
 	FLOAT,
 	STRING,
 	IDENTIFIER,
-	OPERATOR
+	OPERATOR,
+	BOOLEAN
 }
 
 
@@ -150,7 +155,7 @@ func make_tokens(source : String) -> Array:
 			comment(iter)
 	
 	tokens.append(Token.new(TokenType.OPERATOR, "EOF", iter.pos.copy(), iter.pos.copy()))
-	
+	print(tokens)
 	return tokens
 
 
@@ -205,7 +210,13 @@ func make_identifier(tokens : Array, iter : Iterator) -> bool:
 		iname += iter.curr()
 		iter.next()
 	
-	tokens.append(Token.new(TokenType.IDENTIFIER, iname, pstart, iter.pos.copy()))
+	match iname:
+		"true":
+			tokens.append(Token.new(TokenType.BOOLEAN, true, pstart, iter.pos.copy()))
+		"false":
+			tokens.append(Token.new(TokenType.BOOLEAN, false, pstart, iter.pos.copy()))
+		_:
+			tokens.append(Token.new(TokenType.IDENTIFIER, iname, pstart, iter.pos.copy()))
 	
 	return true
 
