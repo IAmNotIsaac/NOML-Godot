@@ -155,7 +155,7 @@ func make_tokens(source : String) -> Array:
 			comment(iter)
 	
 	tokens.append(Token.new(TokenType.OPERATOR, "EOF", iter.pos.copy(), iter.pos.copy()))
-	print(tokens)
+	
 	return tokens
 
 

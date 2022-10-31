@@ -1,0 +1,15 @@
+{
+	"nodes": [
+		Node2D(),
+		Node2D() { name: "Custom name" }
+	],
+
+	"user": [
+		DebugOutput("Printed from DebugOutput constructor!")
+	],
+
+	"godot": [
+		Vector2(0, 0),
+		Vector3(., ., .)
+	]
+}
