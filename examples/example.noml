@@ -1,4 +1,4 @@
-{
+-{
 	"nodes": [
 		Node2D(),
 		Node2D() { name: "Custom name" }

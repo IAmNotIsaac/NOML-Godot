@@ -34,6 +34,41 @@ class Iterator:
 		return tokens[index]
 	
 	
+	func curr_is_op(op : String) -> bool:
+		var t = curr()
+		if t == null: return false
+		
+		return t.is_op(op)
+	
+	
+	func curr_is_literal() -> bool:
+		var t = curr()
+		if t == null: return false
+		
+		return t.is_literal()
+	
+	
+	func curr_is_identifier() -> bool:
+		var t = curr()
+		if t == null: return false
+		
+		return t.is_literal()
+	
+	
+	func curr_pos_start():
+		var t = curr()
+		if t == null: return null
+		
+		return t.pos_start
+	
+	
+	func curr_pos_end():
+		var t = curr()
+		if t == null: return null
+		
+		return t.pos_end
+	
+	
 	func next() -> void:
 		index += 1
 
@@ -58,7 +93,7 @@ func parse(tokens : Array, mappings : Dictionary):
 	if value == null:
 		return null
 	
-	if not iter.curr().is_op("EOF"):
+	if not iter.curr_is_op("EOF"):
 		printerr("Expected end of file, got `%s`" % iter.curr())
 		return null
 	
@@ -67,6 +102,8 @@ func parse(tokens : Array, mappings : Dictionary):
 
 func value(iter : Iterator, mappings : Dictionary):
 	var token = iter.curr()
+	if token == null:
+		return null
 	
 	if token.is_literal():
 		iter.next()
@@ -76,29 +113,29 @@ func value(iter : Iterator, mappings : Dictionary):
 
 
 func array(iter : Iterator, mappings : Dictionary):
-	var ps = iter.curr().pos_start
+	var ps = iter.curr_pos_start()
 	
-	if iter.curr().is_op("["):
+	if iter.curr_is_op("["):
 		var elements := []
 		iter.next()
 		
-		if not iter.curr().is_op("]"):
+		if not iter.curr_is_op("]"):
 			var v = value(iter, mappings)
 			if v == null:
 				return null
 			elements.append(v)
 		
-		while iter.curr().is_op(","):
+		while iter.curr_is_op(","):
 			iter.next()
-			if iter.curr().is_op("]"):
+			if iter.curr_is_op("]"):
 				break
 			var v = value(iter, mappings)
 			if v == null:
 				return null
 			elements.append(v)
 		
-		if not iter.curr().is_op("]"):
-			printerr("Expected , or ], got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+		if not iter.curr_is_op("]"):
+			printerr("Expected , or ], got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 			return null
 		
 		iter.next()
@@ -108,19 +145,19 @@ func array(iter : Iterator, mappings : Dictionary):
 
 
 func dictionary(iter : Iterator, mappings : Dictionary):
-	var ps = iter.curr().pos_start
+	var ps = iter.curr_pos_start()
 	
-	if iter.curr().is_op("{"):
+	if iter.curr_is_op("{"):
 		var elements := {}
 		iter.next()
 		
-		if not iter.curr().is_op("}"):
+		if not iter.curr_is_op("}"):
 			var k = value(iter, mappings)
 			if k == null:
 				return null
 			
-			if not iter.curr().is_op(":"):
-				printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+			if not iter.curr_is_op(":"):
+				printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 				return null
 			
 			iter.next()
@@ -131,17 +168,17 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 			
 			elements[k] = v
 		
-		while iter.curr().is_op(","):
+		while iter.curr_is_op(","):
 			iter.next()
-			if iter.curr().is_op("}"):
+			if iter.curr_is_op("}"):
 				break
 			
 			var k = value(iter, mappings)
 			if k == null:
 				return null
 			
-			if not iter.curr().is_op(":"):
-				printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+			if not iter.curr_is_op(":"):
+				printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 				return null
 			
 			iter.next()
@@ -152,8 +189,8 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 			
 			elements[k] = v
 		
-		if not iter.curr().is_op("}"):
-			printerr("Expected , or }, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+		if not iter.curr_is_op("}"):
+			printerr("Expected , or }, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 			return null
 		
 		iter.next()
@@ -163,54 +200,54 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 
 
 func mapping(iter : Iterator, mappings : Dictionary):
-	var ps = iter.curr().pos_start
+	var ps = iter.curr_pos_start()
 	
-	if iter.curr().is_identifier():
+	if iter.curr_is_identifier():
 		var type = iter.curr()
 		var args := []
 		var property_override := {}
 		
 		iter.next()
 		
-		if not iter.curr().is_op("("):
-			printerr("Expected ( and arguments for type initializing. (%s): %s" % [ps, ps.source_slice(iter.curr().pos_end)])
+		if not iter.curr_is_op("("):
+			printerr("Expected ( and arguments for type initializing. (%s): %s" % [ps, ps.source_slice(iter.curr_pos_end())])
 			return null
 		
 		iter.next()
 		
-		if not iter.curr().is_op(")"):
+		if not iter.curr_is_op(")"):
 			var v = value(iter, mappings)
 			if v == null:
 				return null
 			args.append(v)
 		
-		while iter.curr().is_op(","):
+		while iter.curr_is_op(","):
 			iter.next()
-			if iter.curr().is_op(")"):
+			if iter.curr_is_op(")"):
 				break
 			var v = value(iter, mappings)
 			if v == null:
 				return null
 			args.append(v)
 		
-		if not iter.curr().is_op(")"):
-			printerr("Expected , or ), got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+		if not iter.curr_is_op(")"):
+			printerr("Expected , or ), got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 			return null
 		
 		iter.next()
 		
-		if iter.curr().is_op("{"):
+		if iter.curr_is_op("{"):
 			iter.next()
 			
-			if not iter.curr().is_op("}"):
-				if not iter.curr().is_identifier():
-					printerr("Expected identifier for property override, got %s. (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+			if not iter.curr_is_op("}"):
+				if not iter.curr_is_identifier():
+					printerr("Expected identifier for property override, got %s. (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 					return
 				var k = iter.curr().value
 				iter.next()
 				
-				if not iter.curr().is_op(":"):
-					printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+				if not iter.curr_is_op(":"):
+					printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 					return null
 				
 				iter.next()
@@ -221,19 +258,19 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				property_override[k] = v
 			
-			while iter.curr().is_op(","):
+			while iter.curr_is_op(","):
 				iter.next()
-				if iter.curr().is_op("}"):
+				if iter.curr_is_op("}"):
 					break
 				
-				if not iter.curr().is_identifier():
-					printerr("Expected identifier for property override, got %s. (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+				if not iter.curr_is_identifier():
+					printerr("Expected identifier for property override, got %s. (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 					return
 				var k = iter.curr().value
 				iter.next()
 				
-				if not iter.curr().is_op(":"):
-					printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+				if not iter.curr_is_op(":"):
+					printerr("Expected :, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 					return null
 				
 				iter.next()
@@ -244,15 +281,15 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				property_override[k] = v
 			
-			if not iter.curr().is_op("}"):
-				printerr("Expected , or }, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+			if not iter.curr_is_op("}"):
+				printerr("Expected , or }, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 				return null
 			
 			iter.next()
 		
 		if type.value in BUILTIN_MAPPINGS:
 			if BUILTIN_MAPPINGS[type.value].size() != args.size():
-				printerr("Expected %s args for type %s. (%s): %s" % [BUILTIN_MAPPINGS[type.value].size(), type.value, ps, ps.source_slice(iter.curr().pos_end)])
+				printerr("Expected %s args for type %s. (%s): %s" % [BUILTIN_MAPPINGS[type.value].size(), type.value, ps, ps.source_slice(iter.curr_pos_end())])
 				return null
 			
 			var i := 0
@@ -296,7 +333,7 @@ func mapping(iter : Iterator, mappings : Dictionary):
 			"Vector3": return Vector3(args[0], args[1], args[2])
 			_:
 				if not type.value in mappings:
-					printerr("Type %s not defined. Consider implementing a custom mapping. (%s): %s" % [type.value, ps, ps.source_slice(iter.curr().pos_end)])
+					printerr("Type %s not defined. Consider implementing a custom mapping. (%s): %s" % [type.value, ps, ps.source_slice(iter.curr_pos_end())])
 					return
 				
 				var obj = mappings[type.value].callv("new", args)
@@ -306,5 +343,5 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				return obj
 	
-	printerr("Expected boolean, integer, float, string, array, dictionary, or mapping, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr().pos_end)])
+	printerr("Expected boolean, integer, float, string, array, dictionary, or mapping, got %s (%s): %s" % [iter.curr(), ps, ps.source_slice(iter.curr_pos_end())])
 	return null
