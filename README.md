@@ -85,8 +85,8 @@ letter 	= "A" | "B" | "C" | "D" | "E" | "F" | "G"
 
 comment	= "#", { char }, newline ;
 
-int	= digit, { digit } ;
-float 	= { digit }, ".", { digit } ;
+int	= [ - ], { digit } ;
+float 	= [ - ], { digit }, ".", { digit } ;
 ident	= letter, { letter | digit } ;
 string	= '"', { char }, '"'
 	| "'", { char }, "'" ;
