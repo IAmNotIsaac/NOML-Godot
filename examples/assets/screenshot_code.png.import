@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/icon.png-e049e6637911fa56ddade42e8fcd2cd4.stex"
+path="res://.import/screenshot_code.png-218254bbb10001b73165245088416c66.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/noml/assets/icon.png"
-dest_files=[ "res://.import/icon.png-e049e6637911fa56ddade42e8fcd2cd4.stex" ]
+source_file="res://addons/noml/examples/assets/screenshot_code.png"
+dest_files=[ "res://.import/screenshot_code.png-218254bbb10001b73165245088416c66.stex" ]
 
 [params]
 

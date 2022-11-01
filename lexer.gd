@@ -153,6 +153,9 @@ func make_tokens(source : String) -> Array:
 			iter.next()
 		elif iter.curr() in COMMENT:
 			comment(iter)
+		else:
+			printerr("Unsupported character '%s' (%s)" % [iter.curr(), iter.pos.copy()])
+			return []
 	
 	tokens.append(Token.new(TokenType.OPERATOR, "EOF", iter.pos.copy(), iter.pos.copy()))
 	
