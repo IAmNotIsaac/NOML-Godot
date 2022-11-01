@@ -129,6 +129,7 @@ const IDENTIFIERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
 const IDENTIFIERS_AND_DIGITS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 const OPERATORS = "()[]{},:"
 const COMMENT = "#"
+const SIGN = "-"
 
 
 func make_tokens(source : String) -> Array:
@@ -137,7 +138,7 @@ func make_tokens(source : String) -> Array:
 	var pos = Position.new()
 	
 	while iter.curr() != "":
-		if iter.curr() in NUMBERS:
+		if iter.curr() in NUMBERS + SIGN:
 			if not make_number(tokens, iter):
 				return []
 		elif iter.curr() in STRING_CAPS:
@@ -166,6 +167,10 @@ func make_number(tokens : Array, iter : Iterator) -> bool:
 	var pstart = iter.pos.copy()
 	var num = ""
 	var dots = 0
+	
+	if iter.curr() == SIGN:
+		num += SIGN
+		iter.next()
 	
 	while iter.curr() in NUMBERS:
 		if iter.curr() == ".":
