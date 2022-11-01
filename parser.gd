@@ -52,7 +52,7 @@ class Iterator:
 		var t = curr()
 		if t == null: return false
 		
-		return t.is_literal()
+		return t.is_identifier()
 	
 	
 	func curr_pos_start():
