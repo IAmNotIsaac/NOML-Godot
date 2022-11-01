@@ -45,7 +45,7 @@ func read_noml():
 	var file = File.new()
 	file.open("res://mydata.noml", File.READ)	# make sure you've created a NOML file!
 
-	var noml_builder = NOML.parse(file)		# Returns a NOMLBuilder, allowing us to create mappings
+	var noml_builder = NOML.parse(file.get_as_text())		# Returns a NOMLBuilder, allowing us to create mappings
 	noml_builder \
 		# First we define what we want to call our type in the NOML file, then we pass in our type.
 		.map_native("Node2D", Node2D) \
@@ -241,7 +241,7 @@ func _ready():
 	var file = File.new()
 	file.open("res://Example.noml", File.READ)
 
-	NOML.parse(file) \
+	NOML.parse(file.get_as_text()) \
 		.map("Person", Person) \
 		.build()
 ```
