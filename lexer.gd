@@ -227,6 +227,9 @@ func make_string(tokens : Array, iter : Iterator) -> bool:
 			if ESCAPE_SEQUENCES.has(iter.curr()):
 				string += ESCAPE_SEQUENCES[iter.curr()]
 				iter.next()
+			else:
+				string += iter.curr()
+				iter.next()
 		
 		else:
 			string += iter.curr()
