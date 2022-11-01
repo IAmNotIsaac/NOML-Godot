@@ -131,6 +131,22 @@ const OPERATORS = "()[]{},:"
 const COMMENT = "#"
 const SIGN = "-"
 const NUM_SEP = "_"
+const ESCAPE_CHAR = "\\"
+const ESCAPE_SEQUENCES = {
+	"\"": "\"",
+	"'": "'",
+	"\\": "\\",
+	
+	"a": "\a",
+	"b": "\b",
+	"f": "\f",
+	"n": "\n",
+	"r": "\r",
+	"t": "\t",
+	"v": "\v"
+}
+# todo: ASCII character in octal notation escape sequence
+# todo: ASCII character in hexadecimal notation escape sequence
 
 
 func make_tokens(source : String) -> Array:
@@ -205,8 +221,16 @@ func make_string(tokens : Array, iter : Iterator) -> bool:
 			printerr("String never terminated. %s" % pstart)
 			return false
 		
-		string += iter.curr()
-		iter.next()
+		elif iter.curr() == ESCAPE_CHAR:
+			iter.next()
+			
+			if ESCAPE_SEQUENCES.has(iter.curr()):
+				string += ESCAPE_SEQUENCES[iter.curr()]
+				iter.next()
+		
+		else:
+			string += iter.curr()
+			iter.next()
 	
 	iter.next()
 	
