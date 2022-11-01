@@ -9,6 +9,7 @@
 	],
 
 	"godot": [
+		Vector2(1_000_000, 0),
 		Vector2(0, 0),
 		Vector3(., ., .)
 	]

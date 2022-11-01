@@ -130,6 +130,7 @@ const IDENTIFIERS_AND_DIGITS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUV
 const OPERATORS = "()[]{},:"
 const COMMENT = "#"
 const SIGN = "-"
+const NUM_SEP = "_"
 
 
 func make_tokens(source : String) -> Array:
@@ -172,9 +173,12 @@ func make_number(tokens : Array, iter : Iterator) -> bool:
 		num += SIGN
 		iter.next()
 	
-	while iter.curr() in NUMBERS:
+	while iter.curr() in NUMBERS + NUM_SEP:
 		if iter.curr() == ".":
 			dots += 1
+		elif iter.curr() == NUM_SEP:
+			iter.next()
+			continue
 		
 		num += iter.curr()
 		iter.next()
