@@ -8,12 +8,17 @@ class DebugOutput:
 
 func _ready():
 	var file = File.new()
-	file.open("res://addons/noml/examples/example.noml", File.READ)
+	#file.open("res://addons/noml/examples/example.noml", File.READ)
 	
-	var data = NOML.parse(file.get_as_text()) \
+	var example = """
+	
+	"""
+	
+	var data = NOML.build(example) \
 		.map_native("Node2D", Node2D) \
 		.map("DebugOutput", DebugOutput) \
-		.build()
+		.map_constant("Vector2.BLO", Vector2(0, 100)) \
+		.parse()
 	
 	print(data)
 

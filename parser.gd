@@ -19,6 +19,16 @@ extends Node
 #          \ error
 
 
+class ParseData:
+	var mappings : Dictionary
+	var constants : Dictionary
+	
+	
+	func _init(mappings_ : Dictionary, constants_ : Dictionary) -> void:
+		mappings = mappings_
+		constants = constants_
+
+
 class Iterator:
 	var tokens : Array
 	var index := 0
@@ -85,11 +95,37 @@ const BUILTIN_MAPPINGS := {
 	"Vector3": [ArgTypes.NUMBER, ArgTypes.NUMBER, ArgTypes.NUMBER],
 }
 
-
-func parse(tokens : Array, mappings : Dictionary):
-	var iter = Iterator.new(tokens)
+const BUILTIN_CONSTANTS := {
+	"Vector2.ZERO": Vector2.ZERO,
+	"Vector2.ONE": Vector2.ONE,
+	"Vector2.INF": Vector2.INF,
+	"Vector2.LEFT": Vector2.LEFT,
+	"Vector2.RIGHT": Vector2.RIGHT,
+	"Vector2.UP": Vector2.UP,
+	"Vector2.DOWN": Vector2.DOWN,
+	"Vector2.AXIS_X": Vector2.AXIS_X,
+	"Vector2.AXIS_Y": Vector2.AXIS_Y,
 	
-	var value = value(iter, mappings)
+	"Vector3.ZERO": Vector3.ZERO,
+	"Vector3.ONE": Vector3.ONE,
+	"Vector3.INF": Vector3.INF,
+	"Vector3.FORWARD": Vector3.FORWARD,
+	"Vector3.BACK": Vector3.BACK,
+	"Vector3.LEFT": Vector3.LEFT,
+	"Vector3.RIGHT": Vector3.RIGHT,
+	"Vector3.UP": Vector3.UP,
+	"Vector3.DOWN": Vector3.DOWN,
+	"Vector3.AXIS_X": Vector3.AXIS_X,
+	"Vector3.AXIS_Y": Vector3.AXIS_Y,
+	"Vector3.AXIS_Z": Vector3.AXIS_Z,
+}
+
+
+func parse(tokens : Array, mappings : Dictionary, constants : Dictionary):
+	var iter = Iterator.new(tokens)
+	var pd = ParseData.new(mappings, constants)
+	
+	var value = value(iter, pd)
 	if value == null:
 		return null
 	
@@ -100,7 +136,7 @@ func parse(tokens : Array, mappings : Dictionary):
 	return value
 
 
-func value(iter : Iterator, mappings : Dictionary):
+func value(iter : Iterator, pd : ParseData):
 	var token = iter.curr()
 	if token == null:
 		return null
@@ -109,10 +145,10 @@ func value(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		return token.value
 	
-	return array(iter, mappings)
+	return array(iter, pd)
 
 
-func array(iter : Iterator, mappings : Dictionary):
+func array(iter : Iterator, pd : ParseData):
 	var ps = iter.curr_pos_start()
 	
 	if iter.curr_is_op("["):
@@ -120,7 +156,7 @@ func array(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		
 		if not iter.curr_is_op("]"):
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			elements.append(v)
@@ -129,7 +165,7 @@ func array(iter : Iterator, mappings : Dictionary):
 			iter.next()
 			if iter.curr_is_op("]"):
 				break
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			elements.append(v)
@@ -141,10 +177,10 @@ func array(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		return elements
 	
-	return dictionary(iter, mappings)
+	return dictionary(iter, pd)
 
 
-func dictionary(iter : Iterator, mappings : Dictionary):
+func dictionary(iter : Iterator, pd : ParseData):
 	var ps = iter.curr_pos_start()
 	
 	if iter.curr_is_op("{"):
@@ -152,7 +188,7 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		
 		if not iter.curr_is_op("}"):
-			var k = value(iter, mappings)
+			var k = value(iter, pd)
 			if k == null:
 				return null
 			
@@ -162,7 +198,7 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 			
 			iter.next()
 			
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			
@@ -173,7 +209,7 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 			if iter.curr_is_op("}"):
 				break
 			
-			var k = value(iter, mappings)
+			var k = value(iter, pd)
 			if k == null:
 				return null
 			
@@ -183,7 +219,7 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 			
 			iter.next()
 			
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			
@@ -196,10 +232,10 @@ func dictionary(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		return elements
 	
-	return mapping(iter, mappings)
+	return mapping(iter, pd)
 
 
-func mapping(iter : Iterator, mappings : Dictionary):
+func mapping(iter : Iterator, pd : ParseData):
 	var ps = iter.curr_pos_start()
 	
 	if iter.curr_is_identifier():
@@ -210,13 +246,19 @@ func mapping(iter : Iterator, mappings : Dictionary):
 		iter.next()
 		
 		if not iter.curr_is_op("("):
-			printerr("Expected ( and arguments for type initializing. (%s): %s" % [ps, ps.source_slice(iter.curr_pos_end())])
+			if type.value in BUILTIN_CONSTANTS:
+				return BUILTIN_CONSTANTS[type.value]
+			
+			elif type.value in pd.constants:
+				return pd.constants[type.value]
+			
+			printerr("Expected mapping arguments or valid constant. (%s): %s" % [ps, ps.source_slice(iter.curr_pos_end())])
 			return null
 		
 		iter.next()
 		
 		if not iter.curr_is_op(")"):
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			args.append(v)
@@ -225,7 +267,7 @@ func mapping(iter : Iterator, mappings : Dictionary):
 			iter.next()
 			if iter.curr_is_op(")"):
 				break
-			var v = value(iter, mappings)
+			var v = value(iter, pd)
 			if v == null:
 				return null
 			args.append(v)
@@ -252,7 +294,7 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				iter.next()
 				
-				var v = value(iter, mappings)
+				var v = value(iter, pd)
 				if v == null:
 					return null
 				
@@ -275,7 +317,7 @@ func mapping(iter : Iterator, mappings : Dictionary):
 				
 				iter.next()
 				
-				var v = value(iter, mappings)
+				var v = value(iter, pd)
 				if v == null:
 					return null
 				
@@ -332,11 +374,11 @@ func mapping(iter : Iterator, mappings : Dictionary):
 			"Vector2": return Vector2(args[0], args[1])
 			"Vector3": return Vector3(args[0], args[1], args[2])
 			_:
-				if not type.value in mappings:
+				if not type.value in pd.mappings:
 					printerr("Type %s not defined. Consider implementing a custom mapping. (%s): %s" % [type.value, ps, ps.source_slice(iter.curr_pos_end())])
 					return
 				
-				var obj = mappings[type.value].callv("new", args)
+				var obj = pd.mappings[type.value].callv("new", args)
 				
 				for p in property_override:
 					obj.set(p, property_override[p])

@@ -7,6 +7,7 @@ class NOMLBuilder:
 	
 	var _source : String
 	var _mappings := {}
+	var _constants := {}
 	
 	
 	func _init(source) -> void:
@@ -29,15 +30,22 @@ class NOMLBuilder:
 		return self
 	
 	
-	func build():
+	func map_constant(noml_name : String, value) -> NOMLBuilder:
+		if noml_name in _PARSER.BUILTIN_CONSTANTS:
+			printerr("Cannot override built-in %s constant" % noml_name)
+		_constants[noml_name] = value
+		return self
+	
+	
+	func parse():
 		var lexer = _LEXER.new()
 		var parser = _PARSER.new()
 		
 		var tokens = lexer.make_tokens(_source)
-		var data = parser.parse(tokens, _mappings)
+		var data = parser.parse(tokens, _mappings, _constants)
 		
 		return data
 
 
-func parse(source : String) -> NOMLBuilder:
+func build(source : String) -> NOMLBuilder:
 	return NOMLBuilder.new(source)
