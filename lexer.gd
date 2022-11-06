@@ -245,7 +245,7 @@ func make_identifier(tokens : Array, iter : Iterator) -> bool:
 	var pstart = iter.pos.copy()
 	var iname = ""
 	
-	while iter.curr() in IDENTIFIERS_AND_DIGITS:
+	while iter.curr() in IDENTIFIERS_AND_DIGITS + ".":
 		iname += iter.curr()
 		iter.next()
 	

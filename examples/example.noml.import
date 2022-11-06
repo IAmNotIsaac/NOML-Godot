@@ -1,0 +1,14 @@
+[remap]
+
+importer="iamnotisaac.noml.importhandler"
+type="Mesh"
+path="res://.import/example.noml-ce8262c23bab5f14233304cd387aa35e.noml"
+
+[deps]
+
+source_file="res://addons/noml/examples/example.noml"
+dest_files=[ "res://.import/example.noml-ce8262c23bab5f14233304cd387aa35e.noml" ]
+
+[params]
+
+my_option=false
