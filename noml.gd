@@ -37,6 +37,22 @@ class NOMLBuilder:
 		return self
 	
 	
+	func map_enum(noml_name : String, enum_ : Dictionary) -> NOMLBuilder:
+		for k in enum_.keys():
+			var const_name := "%s.%s" % [noml_name, k]
+			
+			if _constants.has(const_name) or _PARSER.BUILTIN_CONSTANTS.has(const_name):
+				printerr("Enums are supported through constants, but constant %s already exists. Enum %s not mapped." % [const_name, noml_name])
+				return self
+		
+		for k in enum_.keys():
+			var const_name := "%s.%s" % [noml_name, k]
+			
+			_constants[const_name] = enum_[k]
+		
+		return self
+	
+	
 	func parse():
 		var lexer = _LEXER.new()
 		var parser = _PARSER.new()
